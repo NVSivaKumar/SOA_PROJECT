@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@layer base {
+  :root {
+    --color-bg: #F8F9FA;
+    --color-bg-alt: #E9ECEF;
+    --color-gold-bright: #000000;
+    --color-gold: #212529;
+    --color-gold-bronze: #495057;
+    --color-text-main: #212529;
+    --color-text-muted: #6C757D;
+    --color-glass-panel: rgba(0, 0, 0, 0.03);
+    --color-glass-border: rgba(0, 0, 0, 0.1);
+    --color-glass-fill: rgba(0, 0, 0, 0.04);
+  }
+
+  .dark {
+    --color-bg: #060504;
+    --color-bg-alt: #0A0806;
+    --color-gold-bright: #E7C15C;
+    --color-gold: #D4AF37;
+    --color-gold-bronze: #B08A2E;
+    --color-text-main: #F2ECDD;
+    --color-text-muted: #9C8F6E;
+    --color-glass-panel: rgba(255, 255, 255, 0.02);
+    --color-glass-border: rgba(255, 255, 255, 0.15);
+    --color-glass-fill: rgba(255, 255, 255, 0.05);
+  }
+
+  body {
+    @apply bg-background text-text-main font-sans min-h-screen overflow-x-hidden;
+  }
+}
+
+/* Cinematic Gold Orbs - Soft blurred background glow shapes */
+.bg-orb-gold-1, .bg-orb-gold-2 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  animation: drift 25s infinite ease-in-out alternate;
+}
+
+.bg-orb-gold-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+  top: -100px;
+  left: -100px;
+}
+
+.bg-orb-gold-2 {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(231,193,92,0.05) 0%, transparent 70%);
+  bottom: -200px;
+  right: -100px;
+  animation-delay: -10s;
+}
+
+/* Fix for browser autofill background colors */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-text-main) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+  background-color: transparent !important;
+}
+
+/* Reusable Glass Panel Class */
+.glass-panel {
+  @apply bg-glass-panel backdrop-blur-md border border-glass-border rounded-md-glass shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.4)];
+  transition: transform 300ms ease-out;
+}
+
+.glass-panel:hover {
+  @apply -translate-y-[2px];
+}
+
+.glass-panel-lg {
+  @apply bg-glass-panel backdrop-blur-lg border border-glass-border rounded-lg-glass shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_12px_40px_rgba(0,0,0,0.5)];
+  transition: transform 300ms ease-out;
+}
+
+/* View Transition API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: soft-diagonal-wipe 2s linear;
+  -webkit-mask-image: linear-gradient(
+    to bottom right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 35%,
+    rgba(0, 0, 0, 0) 65%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 35%,
+    rgba(0, 0, 0, 0) 65%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-size: 400% 400%;
+  mask-size: 400% 400%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@keyframes soft-diagonal-wipe {
+  0% {
+    -webkit-mask-position: 100% 100%;
+    mask-position: 100% 100%;
+  }
+  100% {
+    -webkit-mask-position: 0% 0%;
+    mask-position: 0% 0%;
+  }
+}
